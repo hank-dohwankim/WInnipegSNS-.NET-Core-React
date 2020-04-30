@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WinnipegSNS.Models;
 
 namespace WinnipegSNS.Data
 {
@@ -12,5 +13,7 @@ namespace WinnipegSNS.Data
                : base(options)
         {
         }
+
+        public DbSet<Activity> Activities { get; set; }
     }
 }
