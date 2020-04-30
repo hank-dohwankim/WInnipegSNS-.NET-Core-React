@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WinnipegSNS.Data;
 
 namespace WinnipegSNS
 {
@@ -20,7 +22,7 @@ namespace WinnipegSNS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
@@ -28,6 +30,10 @@ namespace WinnipegSNS
             {
                 configuration.RootPath = "ClientApp/build";
             });
+            services.AddCors(option => option.AddPolicy("CorsPolicy", policy =>
+            {
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +61,12 @@ namespace WinnipegSNS
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseCors("CorsPolicy");
+
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
             });
 
             app.UseSpa(spa =>
