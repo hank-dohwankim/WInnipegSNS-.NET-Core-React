@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WinnipegSNS.Application.Activities;
 using WinnipegSNS.Data;
 
 namespace WinnipegSNS
@@ -30,10 +32,14 @@ namespace WinnipegSNS
             {
                 configuration.RootPath = "ClientApp/build";
             });
-            services.AddCors(option => option.AddPolicy("CorsPolicy", policy =>
+            services.AddCors(option =>
             {
-                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
-            }));
+                option.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                });
+            });
+            services.AddMediatR(typeof(List.Handler).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
