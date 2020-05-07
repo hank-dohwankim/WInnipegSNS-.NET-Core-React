@@ -16,10 +16,10 @@ namespace WinnipegSNS.Application.Activities
 
         public class Handler : IRequestHandler<Query, List<Activity>>
         {
-            private readonly ApplicationDbContext _dbContext;
+            private readonly Data.ApplicationDbContext _dbContext;
             private readonly ILogger<List> _logger;
 
-            public Handler(ApplicationDbContext dbContext, ILogger<List> logger)
+            public Handler(Data.ApplicationDbContext dbContext, ILogger<List> logger)
             {
                 _dbContext = dbContext;
                 _logger = logger;

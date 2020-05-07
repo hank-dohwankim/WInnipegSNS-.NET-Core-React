@@ -9,7 +9,7 @@ using WinnipegSNS.Data;
 
 namespace WinnipegSNS.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(Data.ApplicationDbContext))]
     [Migration("20200430205748_init mig")]
     partial class initmig
     {
