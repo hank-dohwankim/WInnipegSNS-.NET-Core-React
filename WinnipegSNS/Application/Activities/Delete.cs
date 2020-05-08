@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +8,11 @@ using WinnipegSNS.Data;
 
 namespace WinnipegSNS.Application.Activities
 {
-    public class Edit
+    public class Delete
     {
         public class Command : IRequest
         {
             public Guid Id { get; set; }
-            public string Title { get; set; }
-            public string Descr { get; set; }
-            public string Category { get; set; }
-            public DateTime? Date { get; set; }
-            public string City { get; set; }
-            public string Street { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -39,12 +32,7 @@ namespace WinnipegSNS.Application.Activities
                     throw new Exception("Could not find activity");
                 }
 
-                activity.Title = request.Title ?? activity.Title;
-                activity.Descr = request.Descr ?? activity.Descr;
-                activity.Category = request.Category ?? activity.Category;
-                activity.Date = request.Date ?? activity.Date;
-                activity.City = request.City ?? activity.City;
-                activity.Street = request.Street ?? activity.Street;
+                _db.Remove(activity);
 
                 var success = await _db.SaveChangesAsync() > 0;
 
